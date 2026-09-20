@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ARYAN AI</title>
 
 <style>
@@ -14,45 +14,45 @@
 
 body{
     min-height:100vh;
-    background:#05060a;
-    color:white;
+    background:#03050a;
+    color:#fff;
     font-family:Arial,sans-serif;
-    display:flex;
-    justify-content:center;
     overflow:hidden;
 }
 
 .app{
     width:100%;
-    max-width:500px;
+    max-width:520px;
     min-height:100vh;
-    padding:25px 18px;
+    margin:auto;
+    padding:20px;
     display:flex;
     flex-direction:column;
 }
 
 header{
     text-align:center;
-    margin-top:15px;
 }
 
-header h1{
+.logo{
     font-size:30px;
-    letter-spacing:5px;
+    font-weight:bold;
+    letter-spacing:6px;
 }
 
-header p{
-    margin-top:7px;
-    color:#888;
-    font-size:13px;
+.subtitle{
+    color:#6d7785;
+    font-size:12px;
+    margin-top:6px;
+    letter-spacing:2px;
 }
 
 .core-area{
     flex:1;
     display:flex;
-    flex-direction:column;
     align-items:center;
     justify-content:center;
+    flex-direction:column;
 }
 
 .core{
@@ -63,141 +63,153 @@ header p{
     align-items:center;
     justify-content:center;
     position:relative;
-    background:radial-gradient(circle,#182a45 0%,#0b1422 45%,#05060a 70%);
+    background:radial-gradient(
+        circle,
+        #183d69 0%,
+        #0a1728 40%,
+        #03050a 72%
+    );
     box-shadow:
-        0 0 25px #1677ff,
-        0 0 70px rgba(22,119,255,.45),
-        inset 0 0 35px #1677ff;
-    animation:pulse 3s infinite;
-}
-
-.core::before,
-.core::after{
-    content:"";
-    position:absolute;
-    border-radius:50%;
-    border:1px solid #2588ff;
+        0 0 25px #168cff,
+        0 0 70px rgba(22,140,255,.45),
+        inset 0 0 35px #168cff;
+    animation:breathe 3s infinite;
 }
 
 .core::before{
+    content:"";
+    position:absolute;
     width:220px;
     height:220px;
+    border:1px solid #168cff;
+    border-radius:50%;
     animation:rotate 8s linear infinite;
 }
 
 .core::after{
+    content:"";
+    position:absolute;
     width:250px;
     height:250px;
-    opacity:.3;
+    border:1px solid rgba(22,140,255,.3);
+    border-radius:50%;
     animation:rotate 12s linear infinite reverse;
 }
 
 .eye{
-    width:55px;
-    height:55px;
+    width:58px;
+    height:58px;
     border-radius:50%;
-    background:#55b8ff;
-    box-shadow:0 0 30px #159cff;
+    background:#69c5ff;
+    box-shadow:
+        0 0 20px #168cff,
+        0 0 50px #168cff;
 }
 
 .status{
-    margin-top:45px;
-    color:#65baff;
+    margin-top:50px;
+    color:#55baff;
     font-size:14px;
-    text-align:center;
 }
 
 .chat{
-    height:150px;
+    height:145px;
     overflow-y:auto;
-    margin:15px 0;
-    padding:10px;
+    padding:5px;
+    margin-bottom:10px;
 }
 
 .message{
+    max-width:85%;
     padding:10px 13px;
     margin:7px 0;
     border-radius:15px;
-    max-width:85%;
     font-size:14px;
     line-height:1.4;
 }
 
 .ai{
-    background:#101a29;
-    border:1px solid #193b62;
+    background:#0d1725;
+    border:1px solid #173758;
 }
 
 .user{
-    background:#1260b5;
+    background:#0967c7;
     margin-left:auto;
 }
 
 .controls{
     display:flex;
-    gap:10px;
-    margin-bottom:15px;
+    gap:8px;
 }
 
 input{
     flex:1;
-    background:#10131a;
-    border:1px solid #263444;
+    background:#0b1018;
+    border:1px solid #243346;
     border-radius:25px;
-    padding:14px;
     color:white;
+    padding:14px;
     outline:none;
 }
 
-button{
-    border:0;
-    cursor:pointer;
-}
-
 .send{
-    width:50px;
+    width:52px;
     border-radius:50%;
-    background:#126fe8;
+    border:0;
+    background:#0875e8;
     color:white;
     font-size:18px;
 }
 
 .mic{
+    display:block;
+    margin:14px auto 8px;
     width:75px;
     height:75px;
     border-radius:50%;
-    background:#116fe8;
+    border:0;
+    background:#0875e8;
     color:white;
-    font-size:28px;
-    box-shadow:0 0 25px rgba(17,111,232,.7);
-    margin:auto;
+    font-size:29px;
+    box-shadow:0 0 25px rgba(8,117,232,.7);
 }
 
 .mic.listening{
-    background:#e82245;
-    box-shadow:0 0 35px rgba(232,34,69,.8);
+    background:#e52b4c;
+    box-shadow:0 0 35px rgba(229,43,76,.8);
     animation:micPulse 1s infinite;
 }
 
 footer{
     text-align:center;
-    color:#555;
-    font-size:11px;
-    padding:8px;
+    color:#4b5563;
+    font-size:10px;
+    padding-top:5px;
 }
 
-@keyframes pulse{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.05)}
-}
-
-@keyframes micPulse{
-    50%{transform:scale(1.12)}
+@keyframes breathe{
+    0%,100%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.06);
+    }
 }
 
 @keyframes rotate{
-    from{transform:rotate(0deg)}
-    to{transform:rotate(360deg)}
+    from{
+        transform:rotate(0);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes micPulse{
+    50%{
+        transform:scale(1.12);
+    }
 }
 </style>
 </head>
@@ -207,8 +219,8 @@ footer{
 <div class="app">
 
 <header>
-    <h1>ARYAN AI</h1>
-    <p>PERSONAL AI ASSISTANT</p>
+    <div class="logo">ARYAN AI</div>
+    <div class="subtitle">PERSONAL VOICE ASSISTANT</div>
 </header>
 
 <div class="core-area">
@@ -218,341 +230,566 @@ footer{
     </div>
 
     <div class="status" id="status">
-        Tap the microphone and speak
+        Ready
     </div>
 
 </div>
 
 <div class="chat" id="chat">
+
     <div class="message ai">
-        Hello! I am ARYAN AI. How can I help you?
+        Hello! I am ARYAN AI. Tap the microphone and give me a command.
     </div>
+
 </div>
 
 <div class="controls">
-    <input id="textInput" placeholder="Type a command...">
-    <button class="send" onclick="sendText()">➤</button>
+
+    <input
+        id="textInput"
+        type="text"
+        placeholder="Type a command..."
+    >
+
+    <button
+        class="send"
+        onclick="sendText()"
+    >
+        ➤
+    </button>
+
 </div>
 
-<button class="mic" id="mic" onclick="startListening()">🎙️</button>
+<button
+    class="mic"
+    id="mic"
+    onclick="startListening()"
+>
+    🎙️
+</button>
 
 <footer>
-    ARYAN AI • Voice Assistant
+    ARYAN AI • Mobile Assistant
 </footer>
 
 </div>
 
 <script>
 
-const statusText = document.getElementById("status");
-const mic = document.getElementById("mic");
-const chat = document.getElementById("chat");
-const input = document.getElementById("textInput");
+const statusText =
+document.getElementById("status");
 
-let recognition;
+const mic =
+document.getElementById("mic");
+
+const chat =
+document.getElementById("chat");
+
+const input =
+document.getElementById("textInput");
+
+
+/* -----------------------------
+   CHAT
+----------------------------- */
 
 function addMessage(text,type){
 
-    const message = document.createElement("div");
+    const message =
+    document.createElement("div");
 
-    message.className = "message " + type;
+    message.className =
+    "message " + type;
 
-    message.textContent = text;
+    message.textContent =
+    text;
 
     chat.appendChild(message);
 
-    chat.scrollTop = chat.scrollHeight;
+    chat.scrollTop =
+    chat.scrollHeight;
 }
+
+
+/* -----------------------------
+   VOICE
+----------------------------- */
 
 function speak(text){
 
-    if("speechSynthesis" in window){
+    if(!("speechSynthesis" in window))
+        return;
 
-        speechSynthesis.cancel();
+    speechSynthesis.cancel();
 
-        const voice = new SpeechSynthesisUtterance(text);
+    const voice =
+    new SpeechSynthesisUtterance(text);
 
-        voice.rate = 1;
-        voice.pitch = 1;
-        voice.volume = 1;
+    voice.rate = 1;
+    voice.pitch = 1;
+    voice.volume = 1;
 
-        speechSynthesis.speak(voice);
-    }
+    speechSynthesis.speak(voice);
 }
 
-function respond(text){
 
-    text = text.toLowerCase();
+/* -----------------------------
+   COMMAND ENGINE
+----------------------------- */
+
+function processCommand(command){
+
+    if(!command)
+        return;
+
+    addMessage(command,"user");
+
+    statusText.textContent =
+    "Thinking...";
+
+    setTimeout(
+        () => handleCommand(command),
+        300
+    );
+}
+
+
+/* -----------------------------
+   COMMAND HANDLER
+----------------------------- */
+
+function handleCommand(command){
+
+    const text =
+    command.toLowerCase().trim();
 
     let reply = "";
 
-    if(text.includes("hello") || text.includes("hi")){
 
-        reply = "Hello! I am ARYAN AI. Nice to talk with you.";
+    /* GREETING */
+
+    if(
+        text.includes("hello") ||
+        text.includes("hi aryan") ||
+        text.includes("hey aryan")
+    ){
+
+        reply =
+        "Hello! I am ARYAN AI. How can I help you?";
 
     }
 
-    else if(text.includes("time")){
 
-        reply = "The current time is " +
+    /* TIME */
+
+    else if(
+        text.includes("what time") ||
+        text === "time" ||
+        text.includes("current time")
+    ){
+
+        reply =
+        "The current time is " +
         new Date().toLocaleTimeString();
 
     }
 
-    else if(text.includes("date")){
 
-        reply = "Today is " +
+    /* DATE */
+
+    else if(
+        text.includes("today's date") ||
+        text.includes("what is the date") ||
+        text === "date"
+    ){
+
+        reply =
+        "Today's date is " +
         new Date().toLocaleDateString();
 
     }
 
-    else if(text.includes("open youtube")){
 
-        reply = "Opening YouTube.";
+    /* OPEN YOUTUBE */
 
-        window.open("https://www.youtube.com","_blank");
+    else if(
+        text === "youtube" ||
+        text.includes("open youtube") ||
+        text.includes("launch youtube")
+    ){
+
+        reply =
+        "Opening YouTube.";
+
+        openWebsite(
+            "https://www.youtube.com"
+        );
 
     }
 
-    else if(
-    text.includes("play ") &&
-    text.includes("youtube")
-){
 
-    let query = text
+    /* PLAY ON YOUTUBE */
+
+    else if(
+        text.startsWith("play ") ||
+        text.includes("play ") &&
+        text.includes("youtube")
+    ){
+
+        let query =
+        text
         .replace("play","")
         .replace("on youtube","")
         .replace("youtube","")
         .trim();
 
-    if(!query){
-        reply = "What should I play on YouTube?";
-    }else{
-
-        reply = "Searching YouTube for " + query;
-
-        window.open(
-            "https://www.youtube.com/results?search_query="
-            + encodeURIComponent(query),
-            "_blank"
-        );
-    }
-}
-
-else if(text.startsWith("play ")){
-
-    let query = text
-        .replace("play","")
-        .trim();
-
-    if(query){
-
-        reply = "Searching YouTube for " + query;
-
-        window.open(
-            "https://www.youtube.com/results?search_query="
-            + encodeURIComponent(query),
-            "_blank"
-        );
-
-    }else{
-
-        reply = "What should I play?";
-    }
-}
-
-else if(text.includes("search youtube")){
-
-    let query = text
-        .replace("search youtube for","")
-        .replace("search youtube","")
-        .trim();
-
-    if(query){
-
-        reply = "Searching YouTube for " + query;
-
-        window.open(
-            "https://www.youtube.com/results?search_query="
-            + encodeURIComponent(query),
-            "_blank"
-        );
-
-    }else{
-
-        reply = "What do you want me to search for?";
-    }
-}
-
-else if(text.includes("open youtube")){
-
-    reply = "Opening YouTube.";
-
-    window.open(
-        "https://www.youtube.com",
-        "_blank"
-    );
-    }
-        
-
-        const query = text
-        .replace("search youtube for","")
-        .replace("search youtube","")
-        .replace("youtube","")
-        .trim();
-
         if(query){
 
-            reply = "Searching YouTube for " + query;
+            reply =
+            "Searching YouTube for " +
+            query;
 
-            window.open(
-                "https://www.youtube.com/results?search_query="
-                + encodeURIComponent(query),
-                "_blank"
-            );
+            searchYouTube(query);
 
         }else{
 
-            reply = "Opening YouTube.";
+            reply =
+            "What should I play on YouTube?";
 
-            window.open(
-                "https://www.youtube.com",
-                "_blank"
-            );
         }
 
     }
 
-    else if(text.includes("search")){
 
-        const query = text
-        .replace("search","")
+    /* SEARCH YOUTUBE */
+
+    else if(
+        text.includes("search youtube")
+    ){
+
+        let query =
+        text
+        .replace("search youtube for","")
+        .replace("search youtube","")
         .trim();
 
-        reply = "Searching for " + query;
+        if(query){
 
-        window.open(
-            "https://www.google.com/search?q="
-            + encodeURIComponent(query),
-            "_blank"
+            reply =
+            "Searching YouTube for " +
+            query;
+
+            searchYouTube(query);
+
+        }else{
+
+            reply =
+            "What should I search for on YouTube?";
+
+        }
+
+    }
+
+
+    /* GOOGLE SEARCH */
+
+    else if(
+        text.startsWith("search ") ||
+        text.startsWith("google ")
+    ){
+
+        let query =
+        text
+        .replace("search for","")
+        .replace("search","")
+        .replace("google","")
+        .trim();
+
+        if(query){
+
+            reply =
+            "Searching Google for " +
+            query;
+
+            searchGoogle(query);
+
+        }else{
+
+            reply =
+            "What should I search for?";
+
+        }
+
+    }
+
+
+    /* OPEN GOOGLE */
+
+    else if(
+        text.includes("open google")
+    ){
+
+        reply =
+        "Opening Google.";
+
+        openWebsite(
+            "https://www.google.com"
         );
 
     }
 
-    else if(text.includes("who are you")){
 
-        reply = "I am ARYAN AI, your personal voice assistant.";
+    /* OPEN GITHUB */
+
+    else if(
+        text.includes("open github")
+    ){
+
+        reply =
+        "Opening GitHub.";
+
+        openWebsite(
+            "https://github.com"
+        );
 
     }
+
+
+    /* OPEN PORTFOLIO */
+
+    else if(
+        text.includes("open my website") ||
+        text.includes("open portfolio")
+    ){
+
+        reply =
+        "Opening your portfolio.";
+
+        openWebsite(
+            "https://aryanpandeyofficial.github.io/"
+        );
+
+    }
+
+
+    /* WHO ARE YOU */
+
+    else if(
+        text.includes("who are you") ||
+        text.includes("what are you")
+    ){
+
+        reply =
+        "I am ARYAN AI, your personal mobile assistant.";
+
+    }
+
+
+    /* HELP */
+
+    else if(
+        text === "help" ||
+        text.includes("what can you do")
+    ){
+
+        reply =
+        "I can open YouTube, search YouTube, search Google, tell you the time and date, open websites, and respond to voice commands.";
+
+    }
+
+
+    /* UNKNOWN */
 
     else{
 
-        reply = "I heard you say " + text +
-        ". My AI brain will be added in the next version.";
+        reply =
+        "I heard you say: " +
+        command +
+        ". My advanced AI brain will handle questions like this in the next upgrade.";
 
     }
+
 
     addMessage(reply,"ai");
 
     speak(reply);
 
-    statusText.textContent = "Ready";
+    statusText.textContent =
+    "Ready";
 }
 
-function processCommand(text){
 
-    if(!text) return;
+/* -----------------------------
+   YOUTUBE
+----------------------------- */
 
-    addMessage(text,"user");
+function searchYouTube(query){
 
-    statusText.textContent = "Thinking...";
+    const url =
+    "https://www.youtube.com/results?search_query=" +
+    encodeURIComponent(query);
 
-    setTimeout(function(){
-
-        respond(text);
-
-    },500);
+    openWebsite(url);
 }
+
+
+/* -----------------------------
+   GOOGLE
+----------------------------- */
+
+function searchGoogle(query){
+
+    const url =
+    "https://www.google.com/search?q=" +
+    encodeURIComponent(query);
+
+    openWebsite(url);
+}
+
+
+/* -----------------------------
+   OPEN WEBSITE
+----------------------------- */
+
+function openWebsite(url){
+
+    window.open(
+        url,
+        "_blank"
+    );
+}
+
+
+/* -----------------------------
+   TEXT COMMAND
+----------------------------- */
 
 function sendText(){
 
-    const text = input.value.trim();
+    const text =
+    input.value.trim();
 
-    if(!text) return;
+    if(!text)
+        return;
 
     input.value = "";
 
     processCommand(text);
 }
 
-input.addEventListener("keydown",function(e){
 
-    if(e.key === "Enter"){
-        sendText();
+/* ENTER KEY */
+
+input.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+            sendText();
+        }
+
     }
+);
 
-});
+
+/* -----------------------------
+   MICROPHONE
+----------------------------- */
 
 function startListening(){
 
     const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
 
     if(!SpeechRecognition){
 
         const message =
-        "Sorry, voice recognition is not supported in this browser.";
+        "Voice recognition is not supported in this browser. Try Chrome.";
 
         addMessage(message,"ai");
+
         speak(message);
 
         return;
     }
 
-    recognition = new SpeechRecognition();
 
-    recognition.lang = "en-IN";
+    const recognition =
+    new SpeechRecognition();
 
-    recognition.continuous = false;
 
-    recognition.interimResults = false;
+    recognition.lang =
+    "en-IN";
 
-    recognition.onstart = function(){
 
-        mic.classList.add("listening");
+    recognition.continuous =
+    false;
 
-        statusText.textContent = "Listening...";
 
-    };
+    recognition.interimResults =
+    false;
 
-    recognition.onresult = function(event){
 
-        const text =
-        event.results[0][0].transcript;
+    recognition.onstart =
+    function(){
 
-        processCommand(text);
-
-    };
-
-    recognition.onerror = function(){
+        mic.classList.add(
+            "listening"
+        );
 
         statusText.textContent =
-        "Microphone error. Try again.";
-
-        mic.classList.remove("listening");
+        "Listening...";
 
     };
 
-    recognition.onend = function(){
 
-        mic.classList.remove("listening");
+    recognition.onresult =
+    function(event){
 
-        if(statusText.textContent === "Listening..."){
-            statusText.textContent = "Ready";
+        const command =
+        event
+        .results[0][0]
+        .transcript;
+
+        processCommand(command);
+
+    };
+
+
+    recognition.onerror =
+    function(){
+
+        mic.classList.remove(
+            "listening"
+        );
+
+        statusText.textContent =
+        "Microphone error";
+
+    };
+
+
+    recognition.onend =
+    function(){
+
+        mic.classList.remove(
+            "listening"
+        );
+
+        if(
+            statusText.textContent ===
+            "Listening..."
+        ){
+
+            statusText.textContent =
+            "Ready";
+
         }
 
     };
+
 
     recognition.start();
 }
