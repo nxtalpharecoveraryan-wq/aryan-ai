@@ -1,1 +1,1080 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width,initial-scale=1.0">  
+<title>ARYAN AI</title>  <style>  
+*{box-sizing:border-box;margin:0;padding:0}  
+  
+body{  
+    min-height:100vh;  
+    background:#03050a;  
+    color:white;  
+    font-family:Arial,sans-serif;  
+}  
+  
+.app{  
+    width:100%;  
+    max-width:520px;  
+    min-height:100vh;  
+    margin:auto;  
+    padding:20px;  
+    display:flex;  
+    flex-direction:column;  
+}  
+  
+header{text-align:center}  
+  
+.logo{  
+    font-size:30px;  
+    font-weight:bold;  
+    letter-spacing:6px;  
+}  
+  
+.subtitle{  
+    color:#687382;  
+    font-size:12px;  
+    margin-top:6px;  
+    letter-spacing:2px;  
+}  
+  
+.core-area{  
+    flex:1;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    flex-direction:column;  
+}  
+  
+.core{  
+    width:180px;  
+    height:180px;  
+    border-radius:50%;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    background:radial-gradient(circle,#183d69,#091728 45%,#03050a 72%);  
+    box-shadow:0 0 25px #168cff,  
+               0 0 70px rgba(22,140,255,.4),  
+               inset 0 0 35px #168cff;  
+    animation:breathe 3s infinite;  
+    position:relative;  
+}  
+  
+.core:before{  
+    content:"";  
+    position:absolute;  
+    width:215px;  
+    height:215px;  
+    border:1px solid #168cff;  
+    border-radius:50%;  
+    animation:rotate 8s linear infinite;  
+}  
+  
+.core:after{  
+    content:"";  
+    position:absolute;  
+    width:245px;  
+    height:245px;  
+    border:1px solid rgba(22,140,255,.3);  
+    border-radius:50%;  
+    animation:rotate 12s linear infinite reverse;  
+}  
+  
+.eye{  
+    width:55px;  
+    height:55px;  
+    border-radius:50%;  
+    background:#69c5ff;  
+    box-shadow:0 0 25px #168cff;  
+}  
+  
+.status{  
+    margin-top:48px;  
+    color:#55baff;  
+    font-size:14px;  
+}  
+  
+.chat{  
+    height:145px;  
+    overflow-y:auto;  
+    margin:10px 0;  
+    padding:4px;  
+}  
+  
+.message{  
+    max-width:86%;  
+    padding:10px 13px;  
+    margin:7px 0;  
+    border-radius:15px;  
+    font-size:14px;  
+    line-height:1.4;  
+}  
+  
+.ai{  
+    background:#0d1725;  
+    border:1px solid #173758;  
+}  
+  
+.user{  
+    background:#0967c7;  
+    margin-left:auto;  
+}  
+  
+.controls{  
+    display:flex;  
+    gap:8px;  
+}  
+  
+input{  
+    flex:1;  
+    background:#0b1018;  
+    border:1px solid #263447;  
+    border-radius:25px;  
+    color:white;  
+    padding:14px;  
+    outline:none;  
+}  
+  
+button{  
+    border:0;  
+    cursor:pointer;  
+}  
+  
+.send{  
+    width:52px;  
+    border-radius:50%;  
+    background:#0875e8;  
+    color:white;  
+    font-size:18px;  
+}  
+  
+.mic{  
+    display:block;  
+    margin:14px auto 8px;  
+    width:75px;  
+    height:75px;  
+    border-radius:50%;  
+    background:#0875e8;  
+    color:white;  
+    font-size:29px;  
+    box-shadow:0 0 25px rgba(8,117,232,.7);  
+}  
+  
+.mic.listening{  
+    background:#e52b4c;  
+    animation:micPulse 1s infinite;  
+}  
+  
+.menu{  
+    display:flex;  
+    gap:8px;  
+    margin-top:8px;  
+}  
+  
+.menu button{  
+    flex:1;  
+    padding:10px;  
+    border-radius:12px;  
+    background:#101722;  
+    color:#a9b8ca;  
+    border:1px solid #1e3148;  
+}  
+  
+.panel{  
+    display:none;  
+    background:#080e17;  
+    border:1px solid #19324c;  
+    border-radius:15px;  
+    padding:12px;  
+    margin-top:10px;  
+    max-height:170px;  
+    overflow-y:auto;  
+}  
+  
+.panel h3{  
+    font-size:14px;  
+    margin-bottom:8px;  
+}  
+  
+.note{  
+    padding:8px;  
+    border-bottom:1px solid #172434;  
+    font-size:13px;  
+}  
+  
+.clear{  
+    margin-top:8px;  
+    width:100%;  
+    padding:9px;  
+    background:#551727;  
+    color:#fff;  
+    border-radius:10px;  
+}  
+  
+footer{  
+    text-align:center;  
+    color:#4b5563;  
+    font-size:10px;  
+    padding-top:8px;  
+}  
+  
+@keyframes breathe{  
+    0%,100%{transform:scale(1)}  
+    50%{transform:scale(1.06)}  
+}  
+  
+@keyframes rotate{  
+    from{transform:rotate(0)}  
+    to{transform:rotate(360deg)}  
+}  
+  
+@keyframes micPulse{  
+    50%{transform:scale(1.12)}  
+}  
+</style>  </head>  <body>  <div class="app">  <header>  
+    <div class="logo">ARYAN AI</div>  
+    <div class="subtitle">PERSONAL VOICE ASSISTANT</div>  
+</header>  <div class="core-area">  <div class="core">  
+    <div class="eye"></div>  
+</div>  
 
+<div class="status" id="status">Ready</div>
+
+</div>  <div class="chat" id="chat"></div>  <div class="controls">  <input  
+    id="textInput"  
+    placeholder="Ask ARYAN AI..."  
+>  
+
+<button  
+    class="send"  
+    onclick="sendText()"  
+>➤</button>
+
+</div>  <button
+class="mic"
+id="mic"
+onclick="startListening()"
+
+> 🎙️</button>
+
+
+
+<div class="menu">  <button onclick="togglePanel('notesPanel')">  
+    📝 Notes  
+</button>  
+
+<button onclick="togglePanel('historyPanel')">  
+    📜 History  
+</button>
+
+</div>  <div class="panel" id="notesPanel">  
+    <h3>📝 My Notes</h3>  
+    <div id="notes"></div>  <button class="clear" onclick="clearNotes()">  
+    Clear Notes  
+</button>
+
+</div>  <div class="panel" id="historyPanel">  
+    <h3>📜 Chat History</h3>  
+    <div id="history"></div>  <button class="clear" onclick="clearHistory()">  
+    Clear History  
+</button>
+
+</div>  <footer>  
+    ARYAN AI • Mobile Assistant  
+</footer>  </div>  <script>  
+  
+/* =====================================================  
+   ARYAN AI GEMINI CONFIG  
+===================================================== */  
+  
+const API_URL =  
+"https://aryan-ai.nxtalpharecoveryaryan.workers.dev/ask";  
+  
+  
+/* =====================================================  
+   ELEMENTS  
+===================================================== */  
+  
+const statusText =  
+document.getElementById("status");  
+  
+const mic =  
+document.getElementById("mic");  
+  
+const chat =  
+document.getElementById("chat");  
+  
+const input =  
+document.getElementById("textInput");  
+  
+  
+/* =====================================================  
+   LOCAL STORAGE  
+===================================================== */  
+  
+let notes =  
+JSON.parse(  
+    localStorage.getItem("aryan_notes") || "[]"  
+);  
+  
+let history =  
+JSON.parse(  
+    localStorage.getItem("aryan_history") || "[]"  
+);  
+  
+  
+/* =====================================================  
+   CHAT MESSAGE  
+===================================================== */  
+  
+function addMessage(text,type,save=true){  
+  
+    const message =  
+    document.createElement("div");  
+  
+    message.className =  
+    "message " + type;  
+  
+    message.textContent =  
+    text;  
+  
+    chat.appendChild(message);  
+  
+    chat.scrollTop =  
+    chat.scrollHeight;  
+  
+    if(save){  
+  
+        history.push({  
+            text:text,  
+            type:type,  
+            time:new Date().toISOString()  
+        });  
+  
+        localStorage.setItem(  
+            "aryan_history",  
+            JSON.stringify(history)  
+        );  
+    }  
+}  
+  
+  
+/* =====================================================  
+   SPEECH  
+===================================================== */  
+  
+function speak(text){  
+  
+    if(!("speechSynthesis" in window))  
+        return;  
+  
+    speechSynthesis.cancel();  
+  
+    const voice =  
+    new SpeechSynthesisUtterance(text);  
+  
+    voice.rate = 1;  
+    voice.pitch = 1;  
+    voice.volume = 1;  
+  
+    speechSynthesis.speak(voice);  
+}  
+  
+  
+/* =====================================================  
+   GEMINI  
+===================================================== */  
+  
+async function askGemini(message){  
+  
+    try{  
+  
+        statusText.textContent =  
+        "Connecting...";  
+  
+        const response =  
+        await fetch(API_URL,{  
+            method:"POST",  
+  
+            headers:{  
+                "Content-Type":  
+                "application/json"  
+            },  
+  
+            body:JSON.stringify({  
+                message:message  
+            })  
+        });  
+  
+  
+        const data =  
+        await response.json();  
+  
+  
+        if(!response.ok){  
+  
+            throw new Error(  
+                data.error ||  
+                "Gemini request failed"  
+            );  
+        }  
+  
+  
+        return (  
+            data.reply ||  
+            "Sorry, I could not generate a reply."  
+        );  
+  
+  
+    }catch(error){  
+  
+        console.error(error);  
+  
+        return (  
+            "Sorry, I could not connect to my AI brain right now."  
+        );  
+    }  
+}  
+  
+  
+/* =====================================================  
+   NOTES  
+===================================================== */  
+  
+function saveNote(note){  
+  
+    notes.push({  
+        text:note,  
+        time:new Date().toLocaleString()  
+    });  
+  
+    localStorage.setItem(  
+        "aryan_notes",  
+        JSON.stringify(notes)  
+    );  
+  
+    renderNotes();  
+}  
+  
+  
+function renderNotes(){  
+  
+    const box =  
+    document.getElementById("notes");  
+  
+    box.innerHTML = "";  
+  
+    if(notes.length === 0){  
+  
+        box.innerHTML =  
+        "<div class='note'>No notes yet.</div>";  
+  
+        return;  
+    }  
+  
+    notes.slice().reverse().forEach(note=>{  
+  
+        const item =  
+        document.createElement("div");  
+  
+        item.className =  
+        "note";  
+  
+        item.textContent =  
+        "• " +  
+        note.text +  
+        " (" +  
+        note.time +  
+        ")";  
+  
+        box.appendChild(item);  
+  
+    });  
+}  
+  
+  
+function clearNotes(){  
+  
+    notes = [];  
+  
+    localStorage.removeItem(  
+        "aryan_notes"  
+    );  
+  
+    renderNotes();  
+}  
+  
+  
+/* =====================================================  
+   HISTORY  
+===================================================== */  
+  
+function renderHistory(){  
+  
+    const box =  
+    document.getElementById("history");  
+  
+    box.innerHTML = "";  
+  
+    history  
+    .slice()  
+    .reverse()  
+    .slice(0,30)  
+    .forEach(item=>{  
+  
+        const div =  
+        document.createElement("div");  
+  
+        div.className =  
+        "note";  
+  
+        div.textContent =  
+        (item.type === "user"  
+            ? "You: "  
+            : "AI: ")  
+        + item.text;  
+  
+        box.appendChild(div);  
+  
+    });  
+}  
+  
+  
+function clearHistory(){  
+  
+    history = [];  
+  
+    localStorage.removeItem(  
+        "aryan_history"  
+    );  
+  
+    renderHistory();  
+  
+    loadHistory();  
+}  
+  
+  
+function togglePanel(id){  
+  
+    const panel =  
+    document.getElementById(id);  
+  
+    panel.style.display =  
+    panel.style.display === "block"  
+    ? "none"  
+    : "block";  
+  
+    renderNotes();  
+    renderHistory();  
+}  
+  
+  
+/* =====================================================  
+   STARTUP  
+===================================================== */  
+  
+function loadHistory(){  
+  
+    chat.innerHTML = "";  
+  
+    if(history.length === 0){  
+  
+        addMessage(  
+            "Hello! I am ARYAN AI. How can I help you?",  
+            "ai",  
+            false  
+        );  
+  
+        return;  
+    }  
+  
+    history.slice(-20).forEach(item=>{  
+  
+        addMessage(  
+            item.text,  
+            item.type,  
+            false  
+        );  
+  
+    });  
+}  
+  
+  
+/* =====================================================  
+   COMMAND PROCESSOR  
+===================================================== */  
+  
+async function processCommand(command){  
+  
+    if(!command)  
+        return;  
+  
+  
+    addMessage(  
+        command,  
+        "user"  
+    );  
+  
+  
+    statusText.textContent =  
+    "Thinking...";  
+  
+  
+    /*  
+       Local commands are handled first.  
+    */  
+  
+    const localReply =  
+    handleLocalCommand(command);  
+  
+  
+    if(localReply !== null){  
+  
+        addMessage(  
+            localReply,  
+            "ai"  
+        );  
+  
+        speak(localReply);  
+  
+        statusText.textContent =  
+        "Ready";  
+  
+        return;  
+    }  
+  
+  
+    /*  
+       Everything else goes to Gemini.  
+    */  
+  
+    const reply =  
+    await askGemini(command);  
+  
+  
+    addMessage(  
+        reply,  
+        "ai"  
+    );  
+  
+    speak(reply);  
+  
+    statusText.textContent =  
+    "Ready";  
+}  
+  
+  
+/* =====================================================  
+   LOCAL COMMANDS  
+===================================================== */  
+  
+function handleLocalCommand(command){  
+  
+    const text =  
+    command.toLowerCase().trim();  
+  
+  
+    /* SAVE NOTE */  
+  
+    if(  
+        text.startsWith("remember ") ||  
+        text.startsWith("save note ") ||  
+        text.startsWith("note ")  
+    ){  
+  
+        let note =  
+        command  
+        .replace(/^remember\s+/i,"")  
+        .replace(/^save note\s+/i,"")  
+        .replace(/^note\s+/i,"")  
+        .trim();  
+  
+  
+        if(!note){  
+  
+            return "What should I remember?";  
+        }  
+  
+  
+        saveNote(note);  
+  
+        return "Okay. I saved that note.";  
+    }  
+  
+  
+    /* SHOW NOTES */  
+  
+    if(  
+        text.includes("show my notes") ||  
+        text === "my notes"  
+    ){  
+  
+        if(notes.length === 0){  
+  
+            return "You don't have any saved notes.";  
+        }  
+  
+        togglePanel("notesPanel");  
+  
+        return (  
+            "You have " +  
+            notes.length +  
+            " saved notes."  
+        );  
+    }  
+  
+  
+    /* TIME */  
+  
+    if(  
+        text === "time" ||  
+        text.includes("what time") ||  
+        text.includes("current time")  
+    ){  
+  
+        return (  
+            "The current time is " +  
+            new Date().toLocaleTimeString()  
+        );  
+    }  
+  
+  
+    /* DATE */  
+  
+    if(  
+        text === "date" ||  
+        text.includes("today's date") ||  
+        text.includes("what is the date")  
+    ){  
+  
+        return (  
+            "Today's date is " +  
+            new Date().toLocaleDateString()  
+        );  
+    }  
+  
+  
+    /* YOUTUBE */  
+  
+    if(  
+        text === "youtube" ||  
+        text === "open youtube"  
+    ){  
+  
+        window.open(  
+            "https://www.youtube.com",  
+            "_blank"  
+        );  
+  
+        return "Opening YouTube.";  
+    }  
+  
+  
+    /* PLAY */  
+  
+    if(text.startsWith("play ")){  
+  
+        let query =  
+        command  
+        .replace(/^play\s+/i,"")  
+        .replace(/\s+on youtube$/i,"")  
+        .trim();  
+  
+  
+        if(!query){  
+  
+            return "What should I play?";  
+        }  
+  
+  
+        window.open(  
+            "https://www.youtube.com/results?search_query=" +  
+            encodeURIComponent(query),  
+            "_blank"  
+        );  
+  
+        return (  
+            "Searching YouTube for " +  
+            query  
+        );  
+    }  
+  
+  
+    /* SEARCH YOUTUBE */  
+  
+    if(  
+        text.startsWith("search youtube")  
+    ){  
+  
+        let query =  
+        command  
+        .replace(/search youtube for/i,"")  
+        .replace(/search youtube/i,"")  
+        .trim();  
+  
+  
+        if(!query){  
+  
+            return "What should I search for?";  
+        }  
+  
+  
+        window.open(  
+            "https://www.youtube.com/results?search_query=" +  
+            encodeURIComponent(query),  
+            "_blank"  
+        );  
+  
+        return (  
+            "Searching YouTube for " +  
+            query  
+        );  
+    }  
+  
+  
+    /* GOOGLE */  
+  
+    if(  
+        text.startsWith("google ") ||  
+        text.startsWith("search ")  
+    ){  
+  
+        let query =  
+        command  
+        .replace(/^search for\s+/i,"")  
+        .replace(/^search\s+/i,"")  
+        .replace(/^google\s+/i,"")  
+        .trim();  
+  
+  
+        if(!query){  
+  
+            return "What should I search for?";  
+        }  
+  
+  
+        window.open(  
+            "https://www.google.com/search?q=" +  
+            encodeURIComponent(query),  
+            "_blank"  
+        );  
+  
+        return (  
+            "Searching Google for " +  
+            query  
+        );  
+    }  
+  
+  
+    /* GITHUB */  
+  
+    if(  
+        text === "github" ||  
+        text.includes("open github")  
+    ){  
+  
+        window.open(  
+            "https://github.com",  
+            "_blank"  
+        );  
+  
+        return "Opening GitHub.";  
+    }  
+  
+  
+    /* PORTFOLIO */  
+  
+    if(  
+        text.includes("open portfolio") ||  
+        text.includes("open my website")  
+    ){  
+  
+        window.open(  
+            "https://aryanpandeyofficial.github.io/",  
+            "_blank"  
+        );  
+  
+        return "Opening your portfolio.";  
+    }  
+  
+  
+    /* GREETING */  
+  
+    if(  
+        text === "hi" ||  
+        text === "hello" ||  
+        text === "hey" ||  
+        text === "hi aryan" ||  
+        text === "hello aryan" ||  
+        text === "hey aryan"  
+    ){  
+  
+        return (  
+            "Hello! I am ARYAN AI. How can I help you?"  
+        );  
+    }  
+  
+  
+    /*  
+       Return null means:  
+       send command to Gemini.  
+    */  
+  
+    return null;  
+}  
+  
+  
+/* =====================================================  
+   TEXT INPUT  
+===================================================== */  
+  
+function sendText(){  
+  
+    const text =  
+    input.value.trim();  
+  
+    if(!text)  
+        return;  
+  
+    input.value = "";  
+  
+    processCommand(text);  
+}  
+  
+  
+input.addEventListener(  
+    "keydown",  
+    function(event){  
+  
+        if(event.key === "Enter"){  
+  
+            sendText();  
+        }  
+    }  
+);  
+  
+  
+/* =====================================================  
+   MICROPHONE  
+===================================================== */  
+  
+function startListening(){  
+  
+    const SpeechRecognition =  
+    window.SpeechRecognition ||  
+    window.webkitSpeechRecognition;  
+  
+  
+    if(!SpeechRecognition){  
+  
+        const message =  
+        "Voice recognition is not supported here. Please use Chrome.";  
+  
+        addMessage(  
+            message,  
+            "ai"  
+        );  
+  
+        speak(message);  
+  
+        return;  
+    }  
+  
+  
+    const recognition =  
+    new SpeechRecognition();  
+  
+  
+    recognition.lang =  
+    "en-IN";  
+  
+    recognition.continuous =  
+    false;  
+  
+    recognition.interimResults =  
+    false;  
+  
+  
+    recognition.onstart =  
+    function(){  
+  
+        mic.classList.add(  
+            "listening"  
+        );  
+  
+        statusText.textContent =  
+        "Listening...";  
+    };  
+  
+  
+    recognition.onresult =  
+    function(event){  
+  
+        const command =  
+        event.results[0][0].transcript;  
+  
+        processCommand(  
+            command  
+        );  
+    };  
+  
+  
+    recognition.onerror =  
+    function(event){  
+  
+        console.error(  
+            "Speech error:",  
+            event.error  
+        );  
+  
+        mic.classList.remove(  
+            "listening"  
+        );  
+  
+        statusText.textContent =  
+        "Voice error";  
+  
+        setTimeout(  
+            ()=>{  
+                statusText.textContent =  
+                "Ready";  
+            },  
+            1500  
+        );  
+    };  
+  
+  
+    recognition.onend =  
+    function(){  
+  
+        mic.classList.remove(  
+            "listening"  
+        );  
+  
+        if(  
+            statusText.textContent ===  
+            "Listening..."  
+        ){  
+  
+            statusText.textContent =  
+            "Ready";  
+        }  
+    };  
+  
+  
+    recognition.start();  
+}  
+  
+  
+/* =====================================================  
+   INITIALIZE  
+===================================================== */  
+  
+renderNotes();  
+  
+renderHistory();  
+  
+loadHistory();  
+  
+</script>  </body>  
+        </html>  
