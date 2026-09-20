@@ -1,5 +1,19 @@
 {
   "name": "aryan-ai",
   "main": "./worker.js",
-  "compatibility_date": "2026-09-20"
+  "compatibility_date": "2026-09-20",
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+      "persist": true,
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  }
 }
