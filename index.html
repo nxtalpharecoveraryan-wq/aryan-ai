@@ -262,7 +262,7 @@ footer{
 
     <input
         id="textInput"
-        placeholder="Type a command..."
+        placeholder="Ask ARYAN AI..."
     >
 
     <button
@@ -293,6 +293,7 @@ footer{
 <div class="panel" id="notesPanel">
     <h3>📝 My Notes</h3>
     <div id="notes"></div>
+
     <button class="clear" onclick="clearNotes()">
         Clear Notes
     </button>
@@ -301,6 +302,7 @@ footer{
 <div class="panel" id="historyPanel">
     <h3>📜 Chat History</h3>
     <div id="history"></div>
+
     <button class="clear" onclick="clearHistory()">
         Clear History
     </button>
@@ -314,6 +316,18 @@ footer{
 
 <script>
 
+/* =====================================================
+   ARYAN AI GEMINI CONFIG
+===================================================== */
+
+const API_URL =
+"https://aryan-ai.nxtalpharecoveryaryan.workers.dev/ask";
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
 const statusText =
 document.getElementById("status");
 
@@ -326,47 +340,25 @@ document.getElementById("chat");
 const input =
 document.getElementById("textInput");
 
+
+/* =====================================================
+   LOCAL STORAGE
+===================================================== */
+
 let notes =
-JSON.parse(localStorage.getItem("aryan_notes") || "[]");
+JSON.parse(
+    localStorage.getItem("aryan_notes") || "[]"
+);
 
 let history =
-JSON.parse(localStorage.getItem("aryan_history") || "[]");
+JSON.parse(
+    localStorage.getItem("aryan_history") || "[]"
+);
 
 
-/* -------------------------
-   STARTUP
-------------------------- */
-
-function loadHistory(){
-
-    chat.innerHTML = "";
-
-    if(history.length === 0){
-
-        addMessage(
-            "Hello! I am ARYAN AI. How can I help you?",
-            "ai",
-            false
-        );
-
-        return;
-    }
-
-    history.slice(-20).forEach(item => {
-
-        addMessage(
-            item.text,
-            item.type,
-            false
-        );
-
-    });
-}
-
-
-/* -------------------------
-   CHAT
-------------------------- */
+/* =====================================================
+   CHAT MESSAGE
+===================================================== */
 
 function addMessage(text,type,save=true){
 
@@ -396,14 +388,13 @@ function addMessage(text,type,save=true){
             "aryan_history",
             JSON.stringify(history)
         );
-
     }
 }
 
 
-/* -------------------------
-   VOICE
-------------------------- */
+/* =====================================================
+   SPEECH
+===================================================== */
 
 function speak(text){
 
@@ -423,9 +414,65 @@ function speak(text){
 }
 
 
-/* -------------------------
+/* =====================================================
+   GEMINI
+===================================================== */
+
+async function askGemini(message){
+
+    try{
+
+        statusText.textContent =
+        "Connecting...";
+
+        const response =
+        await fetch(API_URL,{
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+                message:message
+            })
+        });
+
+
+        const data =
+        await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.error ||
+                "Gemini request failed"
+            );
+        }
+
+
+        return (
+            data.reply ||
+            "Sorry, I could not generate a reply."
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        return (
+            "Sorry, I could not connect to my AI brain right now."
+        );
+    }
+}
+
+
+/* =====================================================
    NOTES
-------------------------- */
+===================================================== */
 
 function saveNote(note){
 
@@ -458,7 +505,7 @@ function renderNotes(){
         return;
     }
 
-    notes.slice().reverse().forEach(note => {
+    notes.slice().reverse().forEach(note=>{
 
         const item =
         document.createElement("div");
@@ -467,8 +514,11 @@ function renderNotes(){
         "note";
 
         item.textContent =
-        "• " + note.text +
-        " (" + note.time + ")";
+        "• " +
+        note.text +
+        " (" +
+        note.time +
+        ")";
 
         box.appendChild(item);
 
@@ -488,23 +538,9 @@ function clearNotes(){
 }
 
 
-function clearHistory(){
-
-    history = [];
-
-    localStorage.removeItem(
-        "aryan_history"
-    );
-
-    loadHistory();
-
-    renderHistory();
-}
-
-
-/* -------------------------
-   HISTORY PANEL
-------------------------- */
+/* =====================================================
+   HISTORY
+===================================================== */
 
 function renderHistory(){
 
@@ -513,8 +549,11 @@ function renderHistory(){
 
     box.innerHTML = "";
 
-    history.slice().reverse().slice(0,30)
-    .forEach(item => {
+    history
+    .slice()
+    .reverse()
+    .slice(0,30)
+    .forEach(item=>{
 
         const div =
         document.createElement("div");
@@ -523,12 +562,28 @@ function renderHistory(){
         "note";
 
         div.textContent =
-        (item.type === "user" ? "You: " : "AI: ")
+        (item.type === "user"
+            ? "You: "
+            : "AI: ")
         + item.text;
 
         box.appendChild(div);
 
     });
+}
+
+
+function clearHistory(){
+
+    history = [];
+
+    localStorage.removeItem(
+        "aryan_history"
+    );
+
+    renderHistory();
+
+    loadHistory();
 }
 
 
@@ -547,37 +602,109 @@ function togglePanel(id){
 }
 
 
-/* -------------------------
-   COMMAND PROCESSOR
-------------------------- */
+/* =====================================================
+   STARTUP
+===================================================== */
 
-function processCommand(command){
+function loadHistory(){
+
+    chat.innerHTML = "";
+
+    if(history.length === 0){
+
+        addMessage(
+            "Hello! I am ARYAN AI. How can I help you?",
+            "ai",
+            false
+        );
+
+        return;
+    }
+
+    history.slice(-20).forEach(item=>{
+
+        addMessage(
+            item.text,
+            item.type,
+            false
+        );
+
+    });
+}
+
+
+/* =====================================================
+   COMMAND PROCESSOR
+===================================================== */
+
+async function processCommand(command){
 
     if(!command)
         return;
 
-    addMessage(command,"user");
+
+    addMessage(
+        command,
+        "user"
+    );
+
 
     statusText.textContent =
     "Thinking...";
 
-    setTimeout(
-        () => handleCommand(command),
-        300
+
+    /*
+       Local commands are handled first.
+    */
+
+    const localReply =
+    handleLocalCommand(command);
+
+
+    if(localReply !== null){
+
+        addMessage(
+            localReply,
+            "ai"
+        );
+
+        speak(localReply);
+
+        statusText.textContent =
+        "Ready";
+
+        return;
+    }
+
+
+    /*
+       Everything else goes to Gemini.
+    */
+
+    const reply =
+    await askGemini(command);
+
+
+    addMessage(
+        reply,
+        "ai"
     );
+
+    speak(reply);
+
+    statusText.textContent =
+    "Ready";
 }
 
 
-/* -------------------------
-   COMMAND ENGINE
-------------------------- */
+/* =====================================================
+   LOCAL COMMANDS
+===================================================== */
 
-function handleCommand(command){
+function handleLocalCommand(command){
 
     const text =
     command.toLowerCase().trim();
-
-    let reply = "";
 
 
     /* SAVE NOTE */
@@ -595,113 +722,90 @@ function handleCommand(command){
         .replace(/^note\s+/i,"")
         .trim();
 
-        if(note){
 
-            saveNote(note);
+        if(!note){
 
-            reply =
-            "Okay. I saved that note.";
-
-        }else{
-
-            reply =
-            "What should I remember?";
-
+            return "What should I remember?";
         }
+
+
+        saveNote(note);
+
+        return "Okay. I saved that note.";
     }
 
 
     /* SHOW NOTES */
 
-    else if(
+    if(
         text.includes("show my notes") ||
-        text.includes("my notes")
+        text === "my notes"
     ){
 
         if(notes.length === 0){
 
-            reply =
-            "You don't have any saved notes.";
+            return "You don't have any saved notes.";
+        }
 
-        }else{
+        togglePanel("notesPanel");
 
-            reply =
+        return (
             "You have " +
             notes.length +
-            " saved notes.";
-
-            togglePanel("notesPanel");
-
-        }
-    }
-
-
-    /* GREETING */
-
-    else if(
-        text.includes("hello") ||
-        text.includes("hi aryan") ||
-        text.includes("hey aryan")
-    ){
-
-        reply =
-        "Hello! I am ARYAN AI. How can I help you?";
-
+            " saved notes."
+        );
     }
 
 
     /* TIME */
 
-    else if(
-        text.includes("what time") ||
+    if(
         text === "time" ||
+        text.includes("what time") ||
         text.includes("current time")
     ){
 
-        reply =
-        "The current time is " +
-        new Date().toLocaleTimeString();
-
+        return (
+            "The current time is " +
+            new Date().toLocaleTimeString()
+        );
     }
 
 
     /* DATE */
 
-    else if(
-        text.includes("date") ||
-        text.includes("today")
+    if(
+        text === "date" ||
+        text.includes("today's date") ||
+        text.includes("what is the date")
     ){
 
-        reply =
-        "Today's date is " +
-        new Date().toLocaleDateString();
-
+        return (
+            "Today's date is " +
+            new Date().toLocaleDateString()
+        );
     }
 
 
     /* YOUTUBE */
 
-    else if(
+    if(
         text === "youtube" ||
-        text.includes("open youtube")
+        text === "open youtube"
     ){
-
-        reply =
-        "Opening YouTube.";
 
         window.open(
             "https://www.youtube.com",
             "_blank"
         );
 
+        return "Opening YouTube.";
     }
 
 
-    /* PLAY YOUTUBE */
+    /* PLAY */
 
-    else if(
-        text.startsWith("play ")
-    ){
+    if(text.startsWith("play ")){
 
         let query =
         command
@@ -709,32 +813,30 @@ function handleCommand(command){
         .replace(/\s+on youtube$/i,"")
         .trim();
 
-        if(query){
 
-            reply =
-            "Searching YouTube for " +
-            query;
+        if(!query){
 
-            window.open(
-                "https://www.youtube.com/results?search_query=" +
-                encodeURIComponent(query),
-                "_blank"
-            );
-
-        }else{
-
-            reply =
-            "What should I play?";
-
+            return "What should I play?";
         }
 
+
+        window.open(
+            "https://www.youtube.com/results?search_query=" +
+            encodeURIComponent(query),
+            "_blank"
+        );
+
+        return (
+            "Searching YouTube for " +
+            query
+        );
     }
 
 
     /* SEARCH YOUTUBE */
 
-    else if(
-        text.includes("search youtube")
+    if(
+        text.startsWith("search youtube")
     ){
 
         let query =
@@ -743,33 +845,31 @@ function handleCommand(command){
         .replace(/search youtube/i,"")
         .trim();
 
-        if(query){
 
-            reply =
-            "Searching YouTube for " +
-            query;
+        if(!query){
 
-            window.open(
-                "https://www.youtube.com/results?search_query=" +
-                encodeURIComponent(query),
-                "_blank"
-            );
-
-        }else{
-
-            reply =
-            "What should I search for?";
-
+            return "What should I search for?";
         }
 
+
+        window.open(
+            "https://www.youtube.com/results?search_query=" +
+            encodeURIComponent(query),
+            "_blank"
+        );
+
+        return (
+            "Searching YouTube for " +
+            query
+        );
     }
 
 
     /* GOOGLE */
 
-    else if(
-        text.startsWith("search ") ||
-        text.startsWith("google ")
+    if(
+        text.startsWith("google ") ||
+        text.startsWith("search ")
     ){
 
         let query =
@@ -779,112 +879,87 @@ function handleCommand(command){
         .replace(/^google\s+/i,"")
         .trim();
 
-        if(query){
 
-            reply =
-            "Searching Google for " +
-            query;
+        if(!query){
 
-            window.open(
-                "https://www.google.com/search?q=" +
-                encodeURIComponent(query),
-                "_blank"
-            );
-
-        }else{
-
-            reply =
-            "What should I search for?";
-
+            return "What should I search for?";
         }
 
+
+        window.open(
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(query),
+            "_blank"
+        );
+
+        return (
+            "Searching Google for " +
+            query
+        );
     }
 
 
     /* GITHUB */
 
-    else if(
+    if(
+        text === "github" ||
         text.includes("open github")
     ){
-
-        reply =
-        "Opening GitHub.";
 
         window.open(
             "https://github.com",
             "_blank"
         );
 
+        return "Opening GitHub.";
     }
 
 
     /* PORTFOLIO */
 
-    else if(
+    if(
         text.includes("open portfolio") ||
         text.includes("open my website")
     ){
-
-        reply =
-        "Opening your portfolio.";
 
         window.open(
             "https://aryanpandeyofficial.github.io/",
             "_blank"
         );
 
+        return "Opening your portfolio.";
     }
 
 
-    /* WHO ARE YOU */
+    /* GREETING */
 
-    else if(
-        text.includes("who are you")
+    if(
+        text === "hi" ||
+        text === "hello" ||
+        text === "hey" ||
+        text === "hi aryan" ||
+        text === "hello aryan" ||
+        text === "hey aryan"
     ){
 
-        reply =
-        "I am ARYAN AI, your personal mobile assistant.";
-
+        return (
+            "Hello! I am ARYAN AI. How can I help you?"
+        );
     }
 
 
-    /* HELP */
+    /*
+       Return null means:
+       send command to Gemini.
+    */
 
-    else if(
-        text === "help" ||
-        text.includes("what can you do")
-    ){
-
-        reply =
-        "I can save notes, remember information, show your history, open YouTube, search YouTube and Google, tell you the time and date, and open websites.";
-
-    }
-
-
-    /* UNKNOWN */
-
-    else{
-
-        reply =
-        "I heard you say: " +
-        command +
-        ". My Gemini AI brain will be added next.";
-
-    }
-
-
-    addMessage(reply,"ai");
-
-    speak(reply);
-
-    statusText.textContent =
-    "Ready";
+    return null;
 }
 
 
-/* -------------------------
+/* =====================================================
    TEXT INPUT
-------------------------- */
+===================================================== */
 
 function sendText(){
 
@@ -902,19 +977,19 @@ function sendText(){
 
 input.addEventListener(
     "keydown",
-    event => {
+    function(event){
 
         if(event.key === "Enter"){
+
             sendText();
         }
-
     }
 );
 
 
-/* -------------------------
+/* =====================================================
    MICROPHONE
-------------------------- */
+===================================================== */
 
 function startListening(){
 
@@ -922,20 +997,26 @@ function startListening(){
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
+
     if(!SpeechRecognition){
 
         const message =
-        "Voice recognition is not supported here. Try Chrome.";
+        "Voice recognition is not supported here. Please use Chrome.";
 
-        addMessage(message,"ai");
+        addMessage(
+            message,
+            "ai"
+        );
 
         speak(message);
 
         return;
     }
 
+
     const recognition =
     new SpeechRecognition();
+
 
     recognition.lang =
     "en-IN";
@@ -950,11 +1031,12 @@ function startListening(){
     recognition.onstart =
     function(){
 
-        mic.classList.add("listening");
+        mic.classList.add(
+            "listening"
+        );
 
         statusText.textContent =
         "Listening...";
-
     };
 
 
@@ -964,21 +1046,34 @@ function startListening(){
         const command =
         event.results[0][0].transcript;
 
-        processCommand(command);
-
+        processCommand(
+            command
+        );
     };
 
 
     recognition.onerror =
-    function(){
+    function(event){
 
-        statusText.textContent =
-        "Microphone error";
+        console.error(
+            "Speech error:",
+            event.error
+        );
 
         mic.classList.remove(
             "listening"
         );
 
+        statusText.textContent =
+        "Voice error";
+
+        setTimeout(
+            ()=>{
+                statusText.textContent =
+                "Ready";
+            },
+            1500
+        );
     };
 
 
@@ -996,9 +1091,7 @@ function startListening(){
 
             statusText.textContent =
             "Ready";
-
         }
-
     };
 
 
@@ -1006,13 +1099,17 @@ function startListening(){
 }
 
 
-/* INITIALIZE */
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 renderNotes();
+
 renderHistory();
+
 loadHistory();
 
 </script>
 
 </body>
-    </html>
+        </html>
