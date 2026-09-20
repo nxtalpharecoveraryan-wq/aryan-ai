@@ -314,7 +314,86 @@ function respond(text){
 
     }
 
-    else if(text.includes("youtube")){
+    else if(
+    text.includes("play ") &&
+    text.includes("youtube")
+){
+
+    let query = text
+        .replace("play","")
+        .replace("on youtube","")
+        .replace("youtube","")
+        .trim();
+
+    if(!query){
+        reply = "What should I play on YouTube?";
+    }else{
+
+        reply = "Searching YouTube for " + query;
+
+        window.open(
+            "https://www.youtube.com/results?search_query="
+            + encodeURIComponent(query),
+            "_blank"
+        );
+    }
+}
+
+else if(text.startsWith("play ")){
+
+    let query = text
+        .replace("play","")
+        .trim();
+
+    if(query){
+
+        reply = "Searching YouTube for " + query;
+
+        window.open(
+            "https://www.youtube.com/results?search_query="
+            + encodeURIComponent(query),
+            "_blank"
+        );
+
+    }else{
+
+        reply = "What should I play?";
+    }
+}
+
+else if(text.includes("search youtube")){
+
+    let query = text
+        .replace("search youtube for","")
+        .replace("search youtube","")
+        .trim();
+
+    if(query){
+
+        reply = "Searching YouTube for " + query;
+
+        window.open(
+            "https://www.youtube.com/results?search_query="
+            + encodeURIComponent(query),
+            "_blank"
+        );
+
+    }else{
+
+        reply = "What do you want me to search for?";
+    }
+}
+
+else if(text.includes("open youtube")){
+
+    reply = "Opening YouTube.";
+
+    window.open(
+        "https://www.youtube.com",
+        "_blank"
+    );
+    }
+        
 
         const query = text
         .replace("search youtube for","")
